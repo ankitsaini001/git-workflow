@@ -9,7 +9,7 @@ jobs:
       - name: Bye
         run: echo "Bye Github Actions"
   second-job:
-    run-on: unbuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Hello Second Job run
         run: echo "Hello Second Job run"
