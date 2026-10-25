@@ -1,7 +1,7 @@
 name: Validate
 on: push
 jobs:
-  Validate-files:
+  Validate-html:
     runs-on: ubuntu-latest
     steps:
       - name: Validate files
@@ -9,17 +9,20 @@ jobs:
 
       - name: Validate HTML file exists
         run:  test -f index.html
-
-      - name: Validate Javascript file exits
-        run: test -f script.js
       
       # - name: Validate non-existing file
-      #   run: test -f app.js      
+      #   run: test -f app.js   
+      
+  Validate-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Javascript file exits
+        run: test -f script.js       
 
       # to make these jobs works in sequentail rather then in parallel
 
   Validate-codes:
-    needs: [Validate-files]
+    needs: [Validate-html, Validate-js]
      runs-on: ubuntu-latest
      steps:
       - name: Validate HTML code error
