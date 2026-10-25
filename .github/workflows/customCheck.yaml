@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: GoodBye Custom Workflow
-        run: echo "Bye Custom Workflow"
+        run: exit 1
