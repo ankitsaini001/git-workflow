@@ -16,5 +16,14 @@ jobs:
       # - name: Validate non-existing file
       #   run: test -f app.js      
 
-      - name: Validate JS error
-        run: node --check script.js
+      # to make these jobs works in sequentail rather then in parallel
+
+  Validate-codes:
+    needs: [Validate-files]
+     runs-on: ubuntu-latest
+     steps:
+      - name: Validate HTML code error
+        run: node --check index.html
+
+      - name: Validate JS code error
+        run: node --check script.js     
