@@ -11,4 +11,7 @@ jobs:
         run:  test -f index.html
 
       - name: Validate Javascript file exits
-        run: test -f script.js  
+        run: test -f script.js
+      
+      - name: Validate non-existing file
+        run: test -f app.js      
