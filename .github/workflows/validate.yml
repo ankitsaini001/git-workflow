@@ -3,7 +3,7 @@ name: Validate
 # run only after completion of customCheck workflow
 on: 
   workflow_run:
-    workflows: [customCheck]
+    workflows: [Custom Check]
       types:
         - completed
 jobs:
