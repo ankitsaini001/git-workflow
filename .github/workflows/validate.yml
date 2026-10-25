@@ -4,8 +4,8 @@ name: Validate
 on: 
   workflow_run:
     workflows: [Custom Check]
-      types:
-        - completed
+    types:
+      - completed
 jobs:
   Validate-html:
     runs-on: ubuntu-latest
