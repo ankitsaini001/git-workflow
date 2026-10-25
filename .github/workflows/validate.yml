@@ -4,29 +4,34 @@ jobs:
   Validate-html:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate files
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Validate HTML file exists
-        run:  test -f index.html
-      
+        run: test -f index.html
+
       # - name: Validate non-existing file
-      #   run: test -f app.js   
-      
+      #   run: test -f app.js
+
   Validate-js:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate Javascript file exits
-        run: test -f script.js       
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # to make these jobs works in sequentail rather then in parallel
+      - name: Validate Javascript file exists
+        run: test -f script.js
 
   Validate-codes:
+    # run only after both jobs above pass (sequential instead of parallel)
     needs: [Validate-html, Validate-js]
-     runs-on: ubuntu-latest
-     steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Validate HTML code error
-        run: node --check index.html
+        run: npx --yes html-validate@9 index.html
 
       - name: Validate JS code error
-        run: node --check script.js     
+        run: node --check script.js
