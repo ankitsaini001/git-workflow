@@ -1,5 +1,11 @@
 name: Validate
-on: push
+#on: push
+# run only after completion of customCheck workflow
+on: 
+  workflow_run:
+    workflows: [customCheck]
+      types:
+        - completed
 jobs:
   Validate-html:
     runs-on: ubuntu-latest
