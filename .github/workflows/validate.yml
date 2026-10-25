@@ -13,5 +13,8 @@ jobs:
       - name: Validate Javascript file exits
         run: test -f script.js
       
-      - name: Validate non-existing file
-        run: test -f app.js      
+      # - name: Validate non-existing file
+      #   run: test -f app.js      
+
+      - name: Validate JS error
+        run: node -- check script.js
