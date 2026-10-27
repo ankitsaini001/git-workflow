@@ -1,16 +1,16 @@
-# git-workflow
+# React + Vite
 
-A sandbox repository for learning and experimenting with GitHub Actions.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Workflows
+Currently, two official plugins are available:
 
-| Workflow | File | Trigger | What it does |
-| --- | --- | --- | --- |
-| `custom` | [.github/workflows/custom.yml](.github/workflows/custom.yml) | Manual (`workflow_dispatch`) | Runs a single job, `first-job`, on `ubuntu-latest` that prints a hello and a goodbye message. |
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Running the workflow
+## React Compiler
 
-1. Open the **Actions** tab of this repository.
-2. Select the **custom** workflow from the list on the left.
-3. Click **Run workflow**, choose the `main` branch, and confirm.
-4. Open the run to see the output of the `Hello Github Actions` and `Bye` steps.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

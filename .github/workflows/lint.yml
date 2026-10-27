@@ -1,0 +1,33 @@
+name: Code Quality Check
+
+# Trigger the workflow on pushes or pull requests to the main branch
+on:
+  push:
+    branches: [ main, stage ]
+  pull_request:
+    branches: [ main, stage ]
+
+jobs:
+  eslint-check:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Clone the repository onto the GitHub runner machine
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm' # Speeds up execution by caching node_modules
+
+      # Step 3: Install all project dependencies
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Execute the linting engine
+      - name: Run ESLint Engine
+        run: npm run lint
