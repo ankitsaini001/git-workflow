@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm' # Speeds up execution by caching node_modules
 
       # Step 3: Install all project dependencies
@@ -33,5 +33,5 @@ jobs:
         run: npm run lint
 
       # Step 5: Run test case for App.jsx file
-      - name: Run Test CAse for App.jsx file
+      - name: Run Test Case for App.jsx file
         run: npm run test  

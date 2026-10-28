@@ -10,7 +10,7 @@ A practice repository for learning **GitHub Actions**, built around a small **Re
 
 ## Getting started
 
-Requires Node.js 20 or later.
+Requires Node.js 22 or later (CI uses Node.js 24).
 
 ```bash
 npm install
@@ -25,6 +25,7 @@ The dev server runs at <http://localhost:5173>.
 | `npm run build` | Build the production bundle into `dist/` |
 | `npm run preview` | Serve the built `dist/` folder locally |
 | `npm run lint` | Run ESLint over the project |
+| `npm test` | Run the Vitest test suite (watch mode locally, single run in CI) |
 
 There is no `npm start` script; use `npm run dev`.
 
@@ -53,7 +54,7 @@ eslint.config.js     ESLint configuration
 | --- | --- | --- | --- |
 | **Custom Check** | [customCheck.yaml](.github/workflows/customCheck.yaml) | Push to any branch | Two jobs that print a welcome and a goodbye message |
 | **Validate** | [validate.yml](.github/workflows/validate.yml) | After **Custom Check** completes (`workflow_run`) | Checks that `index.html` and `script.js` exist, then validates the HTML and JS syntax |
-| **Code Quality Check** | [lint.yml](.github/workflows/lint.yml) | Push or pull request to `main` or `stage` | Installs dependencies with `npm ci` on Node.js 20 and runs `npm run lint` |
+| **Code Quality Check** | [lint.yml](.github/workflows/lint.yml) | Push or pull request to `main` or `stage` | Installs dependencies with `npm ci` on Node.js 24, then runs `npm run lint` and `npm run test` |
 | **custom** | [custom.yml](.github/workflows/custom.yml) | Manual (`workflow_dispatch`) | Two jobs that print hello and bye messages |
 
 ### How the workflows chain together
