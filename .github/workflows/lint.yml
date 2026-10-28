@@ -31,3 +31,7 @@ jobs:
       # Step 4: Execute the linting engine
       - name: Run ESLint Engine
         run: npm run lint
+
+      # Step 5: Run test case for App.jsx file
+      - name: Run Test CAse for App.jsx file
+        run: npm run test  
