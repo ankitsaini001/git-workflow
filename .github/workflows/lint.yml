@@ -34,4 +34,13 @@ jobs:
 
       # Step 5: Run test case for App.jsx file
       - name: Run Test Case for App.jsx file
-        run: npm run test  
+        run: npm run test
+
+      # Step 6: Artifacts manually download
+      - name: Run the Artifacts Manually Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: dist/
+          retention-days: 7  
+
