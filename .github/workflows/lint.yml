@@ -6,41 +6,115 @@ on:
     branches: [ main, stage ]
   pull_request:
     branches: [ main, stage ]
-
 jobs:
-  eslint-check:
-    name: Run ESLint
-    runs-on: ubuntu-latest
+  Install-jobs:
+      runs-on: ubuntu-latest
 
-    steps:
-      # Step 1: Clone the repository onto the GitHub runner machine
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
+      steps:
+        # Step 1: Clone the repository onto the GitHub runner machine
+        - name: Checkout Source Code
+          uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'npm' # Speeds up execution by caching node_modules
+        # Step 2: Set up Node.js environment
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 24
+            cache: 'npm' # Speeds up execution by caching node_modules
 
-      # Step 3: Install all project dependencies
-      - name: Install Dependencies
-        run: npm ci
+        # Step 3: Install all project dependencies
+        - name: Install Dependencies
+          run: npm ci
 
-      # Step 4: Execute the linting engine
-      - name: Run ESLint Engine
-        run: npm run lint
+        # Step 4: Execute the linting engine
+        - name: Run ESLint Engine
+          run: npm run lint
 
-      # Step 5: Run test case for App.jsx file
-      - name: Run Test Case for App.jsx file
-        run: npm run test
+  Test-jobs:
+    eslint-check:
+      name: Run ESLint
+      runs-on: ubuntu-latest
 
-      # Step 6: Artifacts manually download
-      - name: Run the Artifacts Manually Download
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-build
-          path: dist/
-          retention-days: 7  
+      steps:
+        # Step 1: Clone the repository onto the GitHub runner machine
+        - name: Checkout Source Code
+          uses: actions/checkout@v4
 
+        # Step 2: Set up Node.js environment
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 24
+            cache: 'npm' # Speeds up execution by caching node_modules
+
+        # Step 3: Install all project dependencies
+        - name: Install Dependencies
+          run: npm ci
+
+        # Step 4: Execute the linting engine
+        - name: Run ESLint Engine
+          run: npm run lint
+
+        # Step 5: Run test case for App.jsx file
+        - name: Run Test Case for App.jsx file
+          run: npm run test
+
+        # Step 6: Artifacts manually download
+        - name: Run the Artifacts Manually Download
+          uses: actions/upload-artifact@v4
+          with:
+            name: react-build
+            path: dist/
+            retention-days: 7  
+
+  Build-jobs:
+      needs: [Install-jobs,Test-jobs]
+      runs-on: ubuntu-latest
+
+      steps:
+        # Step 1: Clone the repository onto the GitHub runner machine
+        - name: Checkout Source Code
+          uses: actions/checkout@v4
+
+        # Step 2: Set up Node.js environment
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 24
+            cache: 'npm' # Speeds up execution by caching node_modules
+
+        # Step 3: Install all project dependencies
+        - name: Install Dependencies
+          run: npm ci
+
+        # Step 4: Execute the linting engine
+        - name: Run ESLint Engine
+          run: npm run lint
+
+        # Step 5: Run test case for App.jsx file
+        - name: Run Test Case for App.jsx file
+          run: npm run test
+
+        # Step 6: Artifacts manually download
+        - name: Run the Artifacts Manually Download
+          uses: actions/upload-artifact@v4
+          with:
+            name: react-build
+            path: dist/
+            retention-days: 7    
+
+
+  Deploy-jobs:
+      needs: [Install-jobs,Test-jobs,Build-jobs]
+      runs-on: ubuntu-latest
+
+      steps:
+        # Step 1: Clone the repository onto the GitHub runner machine
+        - name: Checkout Source Code
+          uses: actions/checkout@v4
+
+        - name: "install vercel cli"
+          run: npm install --global vercel
+
+        - name: deployment on vercel
+          run: vercel --prod --yes --token="${{secrets.VERCEL_KEY}}"  
