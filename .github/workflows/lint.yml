@@ -69,6 +69,10 @@ jobs:
       needs: [Install-jobs,Test-jobs]
       runs-on: ubuntu-latest
 
+      env:
+          VERCEL_ORG_TOKEN: "${{secrets.VERCEL_ORG_TOKEN}}"
+          VERCEL_PROJECT_ID: "${{SECRETS.VERCEL_PROJECT_ID}}"
+
       steps:
         # Step 1: Clone the repository onto the GitHub runner machine
         - name: Checkout Source Code
@@ -99,20 +103,27 @@ jobs:
           with:
             name: react-build
             path: dist/
-            retention-days: 7    
-
-
-  Deploy-jobs:
-      needs: [Install-jobs,Test-jobs,Build-jobs]
-      runs-on: ubuntu-latest
-
-      steps:
-        # Step 1: Clone the repository onto the GitHub runner machine
-        - name: Checkout Source Code
-          uses: actions/checkout@v4
+            retention-days: 7
 
         - name: "install vercel cli"
           run: npm install --global vercel
 
         - name: deployment on vercel
-          run: vercel --prod --yes --token="${{secrets.VERCEL_KEY}}"  
+          run: vercel --prod --yes --token="${{secrets.VERCEL_KEY}}" 
+             
+
+
+  # Deploy-jobs:
+  #     needs: [Install-jobs,Test-jobs,Build-jobs]
+  #     runs-on: ubuntu-latest
+
+  #     steps:
+  #       # Step 1: Clone the repository onto the GitHub runner machine
+  #       - name: Checkout Source Code
+  #         uses: actions/checkout@v4
+
+  #       - name: "install vercel cli"
+  #         run: npm install --global vercel
+
+  #       - name: deployment on vercel
+  #         run: vercel --prod --yes --token="${{secrets.VERCEL_KEY}}"  
