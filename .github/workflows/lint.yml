@@ -109,7 +109,7 @@ jobs:
           run: npm install --global vercel
 
         - name: deployment on vercel
-          run: vercel --prod --yes --token="${{secrets.VERCEL_KEY}}" 
+          run: vercel deploy dist --prod --yes --token="${{secrets.VERCEL_KEY}}" 
              
 
 
