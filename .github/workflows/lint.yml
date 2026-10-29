@@ -57,21 +57,16 @@ jobs:
         - name: Run Test Case for App.jsx file
           run: npm run test
 
-        # Step 6: Artifacts manually download
-        - name: Run the Artifacts Manually Download
-          uses: actions/upload-artifact@v4
-          with:
-            name: react-build
-            path: dist/
-            retention-days: 7  
-
   Build-jobs:
       needs: [Install-jobs,Test-jobs]
       runs-on: ubuntu-latest
 
       env:
-          VERCEL_ORG_TOKEN: "${{secrets.VERCEL_ORG_TOKEN}}"
-          VERCEL_PROJECT_ID: "${{SECRETS.VERCEL_PROJECT_ID}}"
+          # the Vercel CLI reads VERCEL_ORG_ID (not VERCEL_ORG_TOKEN) together with VERCEL_PROJECT_ID
+          VERCEL_ORG_ID: "${{secrets.VERCEL_ORG_TOKEN}}"
+          VERCEL_PROJECT_ID: "${{secrets.VERCEL_PROJECT_ID}}"
+          # production deploy only on a push to main; stage pushes and pull requests get a preview deploy
+          DEPLOY_ENV: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'production' || 'preview' }}
 
       steps:
         # Step 1: Clone the repository onto the GitHub runner machine
@@ -89,15 +84,11 @@ jobs:
         - name: Install Dependencies
           run: npm ci
 
-        # Step 4: Execute the linting engine
-        - name: Run ESLint Engine
-          run: npm run lint
+        # Step 4: Build the React app into dist/ (lint and tests already ran in Test-jobs)
+        - name: Build React app
+          run: npm run build
 
-        # Step 5: Run test case for App.jsx file
-        - name: Run Test Case for App.jsx file
-          run: npm run test
-
-        # Step 6: Artifacts manually download
+        # Step 5: Artifacts manually download
         - name: Run the Artifacts Manually Download
           uses: actions/upload-artifact@v4
           with:
@@ -108,8 +99,21 @@ jobs:
         - name: "install vercel cli"
           run: npm install --global vercel
 
+        # Step 6: Download the Vercel project settings and environment variables
+        - name: Pull Vercel project settings
+          run: vercel pull --yes --environment=$DEPLOY_ENV --token="${{secrets.VERCEL_KEY}}"
+
+        # Step 7: Build with Vercel into .vercel/output
+        - name: Build for Vercel
+          run: |
+            if [ "$DEPLOY_ENV" = production ]; then PROD_FLAG=--prod; fi
+            vercel build $PROD_FLAG --token="${{secrets.VERCEL_KEY}}"
+
+        # Step 8: Upload the prebuilt output to Vercel
         - name: deployment on vercel
-          run: vercel deploy dist --prod --yes --token="${{secrets.VERCEL_KEY}}" 
+          run: |
+            if [ "$DEPLOY_ENV" = production ]; then PROD_FLAG=--prod; fi
+            vercel deploy --prebuilt $PROD_FLAG --token="${{secrets.VERCEL_KEY}}"
              
 
 
