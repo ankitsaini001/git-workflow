@@ -3,9 +3,9 @@ name: Code Quality Check
 # Trigger the workflow on pushes or pull requests to the main branch
 on:
   push:
-    branches: [ main, stage ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, stage ]
+    branches: [ main ]
 jobs:
   Install-jobs:
       runs-on: ubuntu-latest

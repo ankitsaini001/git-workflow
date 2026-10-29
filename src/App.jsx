@@ -12,6 +12,7 @@ function App() {
       <section id="center">
         <div>
           <h1>Hello World</h1>
+          <p>Welcome to World of Github Action Workflow</p>
         </div>
       </section>
 
