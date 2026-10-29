@@ -31,8 +31,6 @@ jobs:
           run: npm run lint
 
   Test-jobs:
-    eslint-check:
-      name: Run ESLint
       runs-on: ubuntu-latest
 
       steps:
